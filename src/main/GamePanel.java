@@ -1,8 +1,12 @@
+package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
+
+import entity.Player;
+
 
 public class GamePanel extends JPanel implements Runnable { // The class to set up screen
 
@@ -11,7 +15,7 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
     final int scale = 3; // As modern computer have high resolution size, and current 2D image is low. we
                          // scale up
 
-    final int tileSize = originalTileSize * scale; // 48 x 48 tile size scaled up
+    public final int tileSize = originalTileSize * scale; // 48 x 48 tile size scaled up (NOTE Part 3 - Made it to public so Player class accessable)
     final int maxScreenCol = 16; // 16 tiles Horizontal
     final int maxScreenRow = 12; // 12 tiles Vertical
     final int screenWidth = tileSize * maxScreenCol; // 48 x 16 = 768 pixels
@@ -23,6 +27,8 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
     Thread gameThread; // This keeps the program running until it exit the game
 
     Motion key = new Motion(); // New class we are gonna use for character's motion
+
+    Player player = new Player(this, key); // Player added inside
 
     // Set Player's default position
 
@@ -80,15 +86,7 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
     public void update() { // Depending the player's key choice, we can move now. (But, the timeframe is
                            // too fast, we cannot see the change)
 
-        if (key.upPressed == true) {
-            PlayerY -= PlayerSpeed;
-        } else if (key.downPressed == true) {
-            PlayerY += PlayerSpeed;
-        } else if (key.leftPressed == true) {
-            PlayerX -= PlayerSpeed;
-        } else if (key.rightPressed == true) {
-            PlayerX += PlayerSpeed;
-        }
+        player.update(); // Call Player class
     }
 
     public void paintComponent(Graphics g) { // This method is built in method in Java to draw in JPanel
@@ -99,9 +97,7 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
 
         Graphics2D g2 = (Graphics2D) g; // Graphics2D extends graphics class usage
 
-        g2.setColor(Color.white); // Colour of background
-
-        g2.fillRect(PlayerX, PlayerY, tileSize, tileSize); // Size of rectangle
+        player.draw(g2); // Call Player class
 
         g2.dispose(); // Good for saving memory
     }
