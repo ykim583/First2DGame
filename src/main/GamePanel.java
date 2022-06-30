@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
-
 import entity.Player;
+import tile.TileManager;
 
 
 public class GamePanel extends JPanel implements Runnable { // The class to set up screen
@@ -16,10 +16,10 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
                          // scale up
 
     public final int tileSize = originalTileSize * scale; // 48 x 48 tile size scaled up (NOTE Part 3 - Made it to public so Player class accessable)
-    final int maxScreenCol = 16; // 16 tiles Horizontal
-    final int maxScreenRow = 12; // 12 tiles Vertical
-    final int screenWidth = tileSize * maxScreenCol; // 48 x 16 = 768 pixels
-    final int screenHeight = tileSize * maxScreenRow; // 48 x 12 = 576 pixels
+    public final int maxScreenCol = 16; // 16 tiles Horizontal
+    public final int maxScreenRow = 12; // 12 tiles Vertical
+    public final int screenWidth = tileSize * maxScreenCol; // 48 x 16 = 768 pixels
+    public final int screenHeight = tileSize * maxScreenRow; // 48 x 12 = 576 pixels
 
     // FPS
     int FPS = 60;
@@ -30,11 +30,13 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
 
     Player player = new Player(this, key); // Player added inside
 
-    // Set Player's default position
+    TileManager tileM = new TileManager(this);
 
-    int PlayerX = 100;
-    int PlayerY = 100;
-    int PlayerSpeed = 4;
+    // Set Player's default position (Now all inside Player class so commented out here)
+
+    // int PlayerX = 100;
+    // int PlayerY = 100;
+    // int PlayerSpeed = 4;
 
     // Now creating a constructor of gamePanel
 
@@ -96,6 +98,8 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
         super.paintComponent(g); // As we know GamePanel is subclass of JPanel
 
         Graphics2D g2 = (Graphics2D) g; // Graphics2D extends graphics class usage
+
+        tileM.draw(g2); // <WARNING> Draw Tile image before the player (Ad player should override the image of background)
 
         player.draw(g2); // Call Player class
 
