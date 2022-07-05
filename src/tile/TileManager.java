@@ -113,9 +113,17 @@ public class TileManager {
             // There's exception when character might start from position (0,0), and blank
             // space appeared, + gp.player.screen.. offsets this
 
-            g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null); // 보면
-                                                                                                 // tile[tileNum].image
-                                                                                                 // 가 더이상
+            // Rendering Process (If tile is inside screenX or - screenX or + screenY or
+            // -screenY boundary, draw the tiles)
+            if (worldX + gp.tileSize> gp.player.worldX - gp.player.screenX && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+
+                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null); // 보면
+                // tile[tileNum].image
+                // 가 더이상
+
+            }
+
             // fixed value 아니고 새로주어진거기때문에 다양한
             // 타일 모양 변형 가능
 
