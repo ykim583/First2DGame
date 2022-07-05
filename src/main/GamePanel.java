@@ -10,7 +10,7 @@ import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable { // The class to set up screen
 
-    // Screen settings
+    // Screen Settings
     final int originalTileSize = 16; // 16 x 16 tile is created
     final int scale = 3; // As modern computer have high resolution size, and current 2D image is low. we
                          // scale up
@@ -21,6 +21,12 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
     public final int screenWidth = tileSize * maxScreenCol; // 48 x 16 = 768 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 48 x 12 = 576 pixels
 
+    // WORLD Settings
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
+
     // FPS
     int FPS = 60;
 
@@ -28,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
 
     Motion key = new Motion(); // New class we are gonna use for character's motion
 
-    Player player = new Player(this, key); // Player added inside
+    public Player player = new Player(this, key); // Player added inside
 
     TileManager tileM = new TileManager(this);
 

@@ -16,10 +16,18 @@ public class Player extends Entity {
     GamePanel gp;
     Motion key;
 
+    public final int screenX; // Camera that follows the characters position change inside world map
+    public final int screenY;
+
     public Player(GamePanel gp, Motion key) {
 
         this.gp = gp;
         this.key = key;
+
+        // We subtract the tilesize/2 as the current camera location is on top left corner of character
+
+        screenX = gp.screenWidth/2 - (gp.tileSize/2);
+        screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
         setDefaultValues();
         getPlayerImage();
@@ -30,8 +38,10 @@ public class Player extends Entity {
     // (draw)}
 
     public void setDefaultValues() {
-        x = 200;
-        y = 200;
+
+        // Starting point of player at the world map
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 23;
         speed = 4;
         direction = "down";
     }
@@ -63,16 +73,16 @@ public class Player extends Entity {
             
             if (key.upPressed == true) {
                 direction = "up";
-                y -= speed;
+                worldY -= speed;
             } else if (key.downPressed == true) {
                 direction = "down";
-                y += speed;
+                worldY += speed;
             } else if (key.leftPressed == true) {
                 direction = "left";
-                x -= speed;
+                worldX -= speed;
             } else if (key.rightPressed == true) {
                 direction = "right";
-                x += speed;
+                worldX += speed;
             }
 
             // Mechanism - Update method called 60times/second.
@@ -141,6 +151,6 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null); // Image observer
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); // Image observer
     }
 }
