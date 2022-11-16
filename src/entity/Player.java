@@ -3,6 +3,7 @@ package entity;
 import main.GamePanel;
 import main.Motion;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.io.IOException;
 
 import java.awt.image.BufferedImage;
@@ -24,10 +25,19 @@ public class Player extends Entity {
         this.gp = gp;
         this.key = key;
 
-        // We subtract the tilesize/2 as the current camera location is on top left corner of character
+        // We subtract the tilesize/2 as the current camera location is on top left
+        // corner of character
 
-        screenX = gp.screenWidth/2 - (gp.tileSize/2);
-        screenY = gp.screenHeight/2 - (gp.tileSize/2);
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+
+        // Solid Area where we initalized on player (Boundary where we detect collision
+        // within player tile)
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
 
         setDefaultValues();
         getPlayerImage();
@@ -67,22 +77,43 @@ public class Player extends Entity {
     public void update() { // Depending the player's key choice, we can move now. (But, the timeframe is
                            // too fast, we cannot see the change)
 
-        // This first line of code (enables the charcter to make motion change only if th key is being pressed)
+        // This first line of code (enables the charcter to make motion change only if
+        // th key is being pressed)
+        // CHECKS DIRECTION
 
         if (key.upPressed == true || key.downPressed == true || key.rightPressed == true || key.leftPressed == true) {
-            
+
             if (key.upPressed == true) {
                 direction = "up";
-                worldY -= speed;
             } else if (key.downPressed == true) {
                 direction = "down";
-                worldY += speed;
             } else if (key.leftPressed == true) {
                 direction = "left";
-                worldX -= speed;
             } else if (key.rightPressed == true) {
                 direction = "right";
-                worldX += speed;
+            }
+
+            // CHECK TILE COLLISION
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+
+            // IF COLLISION IS FALSE, PLAYER CAN MOVE
+            if (collisionOn == false) {
+
+                switch (direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
             }
 
             // Mechanism - Update method called 60times/second.
