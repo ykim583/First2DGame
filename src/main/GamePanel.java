@@ -1,4 +1,5 @@
 package main;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,7 +8,6 @@ import javax.swing.JPanel;
 import entity.Player;
 import tile.TileManager;
 
-
 public class GamePanel extends JPanel implements Runnable { // The class to set up screen
 
     // Screen Settings
@@ -15,7 +15,8 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
     final int scale = 3; // As modern computer have high resolution size, and current 2D image is low. we
                          // scale up
 
-    public final int tileSize = originalTileSize * scale; // 48 x 48 tile size scaled up (NOTE Part 3 - Made it to public so Player class accessable)
+    public final int tileSize = originalTileSize * scale; // 48 x 48 tile size scaled up (NOTE Part 3 - Made it to
+                                                          // public so Player class accessable)
     public final int maxScreenCol = 16; // 16 tiles Horizontal
     public final int maxScreenRow = 12; // 12 tiles Vertical
     public final int screenWidth = tileSize * maxScreenCol; // 48 x 16 = 768 pixels
@@ -30,15 +31,18 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
     // FPS
     int FPS = 60;
 
+    TileManager tileM = new TileManager(this);
+
     Thread gameThread; // This keeps the program running until it exit the game
 
     Motion key = new Motion(); // New class we are gonna use for character's motion
 
+    public CollisonChecker cChecker = new CollisonChecker(this); // Collision Detect Class
+
     public Player player = new Player(this, key); // Player added inside
 
-    TileManager tileM = new TileManager(this);
-
-    // Set Player's default position (Now all inside Player class so commented out here)
+    // Set Player's default position (Now all inside Player class so commented out
+    // here)
 
     // int PlayerX = 100;
     // int PlayerY = 100;
@@ -63,7 +67,8 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
     @Override
     public void run() { // When gameThread being called, run method is automatically called
 
-        double drawInterval = 1000000000 / FPS; // Total time executalble (60 draw per second), before, too fast so cannot see the motion change
+        double drawInterval = 1000000000 / FPS; // Total time executalble (60 draw per second), before, too fast so
+                                                // cannot see the motion change
         double nextDrawTime = System.nanoTime() + drawInterval; // When nextDrawTime is reached, we repeat the process
 
         while (gameThread != null) {
@@ -105,7 +110,8 @@ public class GamePanel extends JPanel implements Runnable { // The class to set 
 
         Graphics2D g2 = (Graphics2D) g; // Graphics2D extends graphics class usage
 
-        tileM.draw(g2); // <WARNING> Draw Tile image before the player (Ad player should override the image of background)
+        tileM.draw(g2); // <WARNING> Draw Tile image before the player (Ad player should override the
+                        // image of background)
 
         player.draw(g2); // Call Player class
 
