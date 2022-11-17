@@ -23,3 +23,4 @@ d]
 
 A 2D Game for the aim of user to play freely inside fixed world-map sized game.
 Game is made via Java
+Licensed by RyiSnow 
